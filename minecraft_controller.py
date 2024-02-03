@@ -1,18 +1,16 @@
 from threading import Thread
 import sys
-import pynput, time
-from pynput import mouse, keyboard
-from pynput.mouse import Button, Controller
+import time
+from pynput.keyboard import Key, Controller
 import pyautogui # better than pynput for more gradual movements
-
-from data import Data
+from data import GameActionData, RotationData
 
 class MinecraftController:
-    bicep_threshold = 90
-    lean_threshold = 90
+    flex_threshold = 90
+    jump_threshold = 90
+
     pressing = False
-    rotating = False
-    walking = False
+    keyboard = Controller()
     
     time.sleep(5)
 
@@ -26,10 +24,24 @@ class MinecraftController:
         pyautogui.mouseUp()
         sys.exit()
 
-    def game_actions(self, data):
-        if (data.bicep_flex >= self.bicep_threshold and not self.pressing):
+    def jump(self):
+        print("started hitting")
+        self.keyboard.press(Key.space)
+        sys.exit()
+
+    def game_actions(self, data: GameActionData):
+        if (data.flex_value >= self.flex_threshold and not self.pressing):
             Thread(target=self.start_hit).start()
             self.pressing = True
-        if (data.bicep_flex < self.bicep_threshold and self.pressing):
+        if (data.flex_value < self.flex_threshold and self.pressing):
             Thread(target=self.end_hit).start()
             self.pressing = False
+        if (data.jump_value >= self.jump_threshold):
+            Thread(target=self.jump).start()
+
+    def rotate_camera(self, data: RotationData):
+        y_angle = data.y_angle / 90
+        x_angle = data.x_angle / 90
+        pyautogui.moveRel(200 * x_angle, 300 * y_angle, duration=1)
+
+

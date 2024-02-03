@@ -1,4 +1,4 @@
-from data import Data
+from data import GameActionData
 from minecraft_controller import MinecraftController
 
 
@@ -8,5 +8,5 @@ hit_test = [0, 100, 0, 100, 0, 100, 0, 100, 0, 100, 0, 100, 0, 100]
 mc_controller = MinecraftController()
 
 for num in dig_test:
-    data = Data(bicep_flex=num, lean_forward=0)
+    data = GameActionData(bicep_flex=num, lean_forward=0)
     mc_controller.game_actions(data)
