@@ -13,6 +13,7 @@ def jump():
     pause(5) # keyboard.release doesn't work for stopping actions well without setting 
             # some kind of sleep delay Toby. Keshav is fine with sleep delay since it only 
             # affects one thread instead of the whole program
+    
     keyboard.release(Key.space)
 
 def walk():
@@ -22,12 +23,7 @@ def walk():
     pause(5) # look at stuff for jump if confused
     
     keyboard.release('w')
-    
-        
 
-
-def stopWalk():
-    keyboard.release('w')
 
 pause(5)
 
