@@ -37,12 +37,6 @@ class MinecraftController:
 
     def select_axe():
         pyautogui.press('3')
-    
-    def rotate_right():
-        pyautogui.moveRel(200, 0, duration = 1)
-
-    def rotate_left():
-        pyautogui.moveRel(-200, 0, duration = 1)
 
     def check_punch_start(self, flex_value):
         if (flex_value >= self.flex_threshold and not self.pressing):
@@ -52,31 +46,31 @@ class MinecraftController:
             Thread(target=self.end_hit).start()
             self.pressing = False
 
-    def check_start_walk(self, forward, backward, left, right):
-        if (forward >= self.forward_threshold and self.walking[0]):
+    def check_start_walk(self, y, x):
+        if (y >= self.forward_threshold and self.walking[0]):
             Thread(self.keyboard.press('w')).start()
             self.walking[0] = True
-        if (backward <= self.backward_threshold and self.walking[1]):
+        if (y <= self.backward_threshold and self.walking[1]):
             Thread(self.keyboard.press('s')).start()
             self.walking[1] = True        
-        if (right >= self.right_threshold and self.walking[2]):
+        if (x >= self.right_threshold and self.walking[2]):
             Thread(self.keyboard.press('d')).start()
             self.walking[2] = True        
-        if (left <= self.left_threshold and self.walking[3]):
+        if (x <= self.left_threshold and self.walking[3]):
             Thread(self.keyboard.press('a')).start()
             self.walking[3] = True
 
-    def check_end_walk(self, forward, backward, left, right):
-        if (forward < self.forward_threshold and not self.walking[0]):
+    def check_end_walk(self, y, x):
+        if (y < self.forward_threshold and not self.walking[0]):
             Thread(self.keyboard.release('w')).start()
             self.walking[0] = False
-        if (backward > self.backward_threshold and not self.walking[1]):
+        if (y > self.backward_threshold and not self.walking[1]):
             Thread(self.keyboard.release('s')).start()
             self.walking[1] = False        
-        if (right < self.right_threshold and not self.walking[2]):
+        if (x < self.right_threshold and not self.walking[2]):
             Thread(self.keyboard.release('d')).start()
             self.walking[2] = False        
-        if (left > self.left_threshold and not self.walking[3]):
+        if (x > self.left_threshold and not self.walking[3]):
             Thread(self.keyboard.release('a')).start()
             self.walking[3] = False
 
@@ -86,9 +80,9 @@ class MinecraftController:
 
     def game_actions(self, data: GameActionData):
         self.check_punch_start(data.flex_value)
-        self.check_start_walk(data.forward_value, data.backward_value, data.left_value, data.right_value)
-        self.check_end_walk(data.forward_value, data.backward_value, data.left_value, data.right_value)
-        self.rotate_camera(data.tiltup_value, data.tiltdown_value, data.tiltleft_value, data.tiltright_value)
+        self.check_start_walk(data.y_move, data.x_move)
+        self.check_end_walk(data.y_move, data.x_move)
+        self.rotate_camera(data.y_tilt, data.x_tilt)
 
     def select_item(self, item: int):
         if (item == 2):
@@ -96,13 +90,13 @@ class MinecraftController:
         elif (item == 3):
             self.select_axe()
 
-    def rotate_camera(self, tiltup_value, tiltdown_value, tiltleft_value, tiltright_value):
-        if (tiltup_value <= self.uptilt_threshold):
+    def rotate_camera(self, y, x):
+        if (y <= self.uptilt_threshold):
             Thread(pyautogui.moveRel(0, 30, duration=1)).start()
-        if (tiltdown_value >= self.downtilt_threshold):
+        if (y >= self.downtilt_threshold):
             Thread(pyautogui.moveRel(0, -30, duration=1)).start()
-        if (tiltleft_value <= self.lefttilt_threshold):
+        if (x <= self.lefttilt_threshold):
             Thread(pyautogui.moveRel(20, 0, duration=1)).start()
-        if (tiltright_value >= self.righttilt_threshold):
+        if (x >= self.righttilt_threshold):
             Thread(pyautogui.moveRel(-20, 0, duration=1)).start()
 

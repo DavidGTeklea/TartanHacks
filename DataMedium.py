@@ -48,7 +48,7 @@ try:
             # print("Accel Chest Value: " + str(Accelerometer_Value_Chest[0]) + ", " + str(Accelerometer_Value_Chest[1]) + ", " + str(Accelerometer_Value_Chest[2]))
             # print("Gyro Chest Value: " + str(Gyroscope_Value_Chest[0]) + ", " + str(Gyroscope_Value_Chest[1]) + ", " + str(Gyroscope_Value_Chest[2]))
             
-            game_action_data = GameActionData(flex_value = EMG_Value_Bicep, jump_value=0)
+            game_action_data = GameActionData(flex_value = EMG_Value_Bicep, jump_value = Gyroscope_Value_Chest[0], y_move= Gyroscope_Value_Chest[1], x_move= Gyroscope_Value_Chest[2], y_tilt=Gyroscope_Value_Head[1], x_tilt=Gyroscope_Value_Head[2])
             mc_controller.game_actions(game_action_data)
 
             item = weapon_classifier(take_screenshot())
