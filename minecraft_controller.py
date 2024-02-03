@@ -3,6 +3,7 @@ import sys
 import pynput, time
 from pynput import mouse, keyboard
 from pynput.mouse import Button, Controller
+import pyautogui # better than pynput for more gradual movements
 
 from data import Data
 
@@ -15,12 +16,12 @@ class MinecraftController:
     
     def start_hit(self):
         print("started hitting")
-        #mouse.press(Button.left)
+        pyautogui.mouseDown()
         sys.exit()
 
     def end_hit(self):
         print("stopped hitting")
-        #mouse.release(Button.left)
+        pyautogui.mouseUp()
         sys.exit()
 
     def game_actions(self, data):
