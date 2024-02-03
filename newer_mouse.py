@@ -39,6 +39,8 @@ def hit():
 def place_block():
     pyautogui.click(button = 'right')
 
+def dig():
+    pyautogui.mouseDown()
 
 # testing calls
 pause(5)
