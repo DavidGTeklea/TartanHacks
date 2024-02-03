@@ -18,7 +18,9 @@ class MinecraftController:
     righttilt_threshold = 15000
 
     pressing = False
+    jumping = False
     walking = [False, False, False, False]
+    rotating = [False, False, False, False]
     keyboard = Controller()
 
     def start_hit(self):
@@ -30,8 +32,11 @@ class MinecraftController:
         pyautogui.mouseUp()
 
     def jump(self):
-        self.keyboard.press(Key.space)
+        pyautogui.keyDown("space")
     
+    def end_jump(self):
+        pyautogui.keyUp("space")
+
     def select_sword():
         pyautogui.press('2')
 
@@ -48,40 +53,46 @@ class MinecraftController:
 
     def check_start_walk(self, y, x):
         if (y >= self.forward_threshold and self.walking[0]):
-            Thread(self.keyboard.press('w')).start()
+            print("here")
+            Thread(pyautogui.keyDown("w")).start()
             self.walking[0] = True
         if (y <= self.backward_threshold and self.walking[1]):
-            Thread(self.keyboard.press('s')).start()
+            Thread(pyautogui.keyDown("s")).start()
             self.walking[1] = True        
         if (x >= self.right_threshold and self.walking[2]):
-            Thread(self.keyboard.press('d')).start()
+            Thread(pyautogui.keyDown("d")).start()
             self.walking[2] = True        
         if (x <= self.left_threshold and self.walking[3]):
-            Thread(self.keyboard.press('a')).start()
+            Thread(pyautogui.keyDown("a")).start()
             self.walking[3] = True
 
     def check_end_walk(self, y, x):
         if (y < self.forward_threshold and not self.walking[0]):
-            Thread(self.keyboard.release('w')).start()
+            Thread(pyautogui.keyUp("w")).start()
             self.walking[0] = False
         if (y > self.backward_threshold and not self.walking[1]):
-            Thread(self.keyboard.release('s')).start()
+            Thread(pyautogui.keyUp("s")).start()
             self.walking[1] = False        
         if (x < self.right_threshold and not self.walking[2]):
-            Thread(self.keyboard.release('d')).start()
+            Thread(pyautogui.keyUp("d")).start()
             self.walking[2] = False        
         if (x > self.left_threshold and not self.walking[3]):
-            Thread(self.keyboard.release('a')).start()
+            Thread(pyautogui.keyUp("a")).start()
             self.walking[3] = False
 
     def check_jump(self, jump_value):
-        if (jump_value >= self.jump_threshold):
+        if (jump_value >= self.jump_threshold and not self.jumping):
             Thread(target=self.jump).start()
+            jumping = True
+        if (jump_value < self.jump_threshold and self.jumping):
+            Thread(target=self.end_jump).start()
+            jumping = False
 
     def game_actions(self, data: GameActionData):
         self.check_punch_start(data.flex_value)
-        self.check_start_walk(data.y_move, data.x_move)
-        self.check_end_walk(data.y_move, data.x_move)
+        # self.check_jump(data.jump_value)
+        # self.check_start_walk(data.y_move, data.x_move)
+        # self.check_end_walk(data.y_move, data.x_move)
         self.rotate_camera(data.y_tilt, data.x_tilt)
 
     def select_item(self, item: int):
@@ -92,11 +103,12 @@ class MinecraftController:
 
     def rotate_camera(self, y, x):
         if (y <= self.uptilt_threshold):
-            Thread(pyautogui.moveRel(0, -15, duration=1)).start()
+            Thread(pyautogui.moveRel(0, -30, duration=.1)).start()
         if (y >= self.downtilt_threshold):
-            Thread(pyautogui.moveRel(0, 15, duration=1)).start()
+            Thread(pyautogui.moveRel(0, 30, duration=.1)).start()
         if (x <= self.lefttilt_threshold):
-            Thread(pyautogui.moveRel(10, 0, duration=1)).start()
+            Thread(pyautogui.moveRel(30, 0, duration=.1)).start()
         if (x >= self.righttilt_threshold):
-            Thread(pyautogui.moveRel(-10, 0, duration=1)).start()
+            Thread(pyautogui.moveRel(-30, 0, duration=.1)).start()
+
 

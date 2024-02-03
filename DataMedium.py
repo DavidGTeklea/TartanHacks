@@ -9,15 +9,6 @@ from roboflow import Roboflow
 # data connection to arduino
 ser = serial.Serial('COM5', 9600, timeout=1)
 
-# default sensor values
-EMG_Value_Default_Bicep = 90.0
-Accelerometer_Value_Default_Head = [-2000.0, -1000.0, 18000.0]
-# Look up/down: up = [2500, -, -], down = [-, -, 10000]
-# Look left/right: left = [2500, -, -], right = [-, 2500, -]
-Gyroscope_Value_Default_Head = [-6000.0, -9000.0, 11500.0]
-Accelerometer_Value_Default_Chest = [-1100.0, 18000.0, -1000.0]
-Gyroscope_Value_Default_Chest= [100.0, -9000.0, 11500.0]
-
 mc_controller = MinecraftController()
 # rf = Roboflow(api_key="c5Ak0Ld4PWZ1PNR0nt23")
 # mob_project = rf.workspace().project("minecraft-mob-detection")
@@ -49,7 +40,7 @@ try:
             # print("Accel Head Value: " + str(Accelerometer_Value_Head[0]) + ", " + str(Accelerometer_Value_Head[1]) + ", " + str(Accelerometer_Value_Head[2]))
             # print("Gyro Head Value: " + str(Gyroscope_Value_Head[0]) + ", " + str(Gyroscope_Value_Head[1]) + ", " + str(Gyroscope_Value_Head[2]))
             # print("Accel Chest Value: " + str(Accelerometer_Value_Chest[0]) + ", " + str(Accelerometer_Value_Chest[1]) + ", " + str(Accelerometer_Value_Chest[2]))
-            # print("Gyro Chest Value: " + str(Gyroscope_Value_Chest[0]) + ", " + str(Gyroscope_Value_Chest[1]) + ", " + str(Gyroscope_Value_Chest[2]))
+            print("Gyro Chest Value: " + str(Gyroscope_Value_Chest[0]) + ", " + str(Gyroscope_Value_Chest[1]) + ", " + str(Gyroscope_Value_Chest[2]))
             
             game_action_data = GameActionData(flex_value = EMG_Value_Bicep, jump_value = Gyroscope_Value_Chest[0], y_move= Gyroscope_Value_Chest[1], x_move= Gyroscope_Value_Chest[2], y_tilt=Gyroscope_Value_Head[1], x_tilt=Gyroscope_Value_Head[2])
             mc_controller.game_actions(game_action_data)
