@@ -14,6 +14,8 @@ class MinecraftController:
     rotating = False
     walking = False
     
+    time.sleep(5)
+
     def start_hit(self):
         print("started hitting")
         pyautogui.mouseDown()
