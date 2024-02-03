@@ -8,15 +8,12 @@ import time
 from roboflow import Roboflow
 
 # roboflow load model
-rf = Roboflow(api_key="c5Ak0Ld4PWZ1PNR0nt23")
+rf = Roboflow(api_key="uDoE3DUCHU5EVGAvTTyW")
 mob_project = rf.workspace().project("minecraft-mob-detection")
 mob_model = mob_project.version(10).model
 
 tree_project = rf.workspace().project("minecraft-tree-detection")
 tree_model = tree_project.version(1).model
-
-#counter
-count = 0
 
 def take_screenshot():
     # take screenshot using pyautogui 
@@ -44,10 +41,3 @@ def weapon_classifier(image):
             return 2
 
     return 1
-
-while(1):
-    weapon_classifier(take_screenshot())
-    count += 1
-
-    if(count >= 20):
-        break
