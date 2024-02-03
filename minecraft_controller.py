@@ -92,11 +92,11 @@ class MinecraftController:
 
     def rotate_camera(self, y, x):
         if (y <= self.uptilt_threshold):
-            Thread(pyautogui.moveRel(0, -15, duration=1)).start()
+            Thread(pyautogui.moveRel(0, -40, duration=.1)).start()
         if (y >= self.downtilt_threshold):
-            Thread(pyautogui.moveRel(0, 15, duration=1)).start()
+            Thread(pyautogui.moveRel(0, 40, duration=.1)).start()
         if (x <= self.lefttilt_threshold):
-            Thread(pyautogui.moveRel(10, 0, duration=1)).start()
+            Thread(pyautogui.moveRel(40, 0, duration=.1)).start()
         if (x >= self.righttilt_threshold):
-            Thread(pyautogui.moveRel(-10, 0, duration=1)).start()
+            Thread(pyautogui.moveRel(-40, 0, duration=.1)).start()
 
