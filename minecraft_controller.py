@@ -31,12 +31,21 @@ class MinecraftController:
 
     def jump(self):
         self.keyboard.press(Key.space)
+
+    def select_pickaxe(self):
+        pyautogui.press('1')
     
-    def select_sword():
+    def select_sword(self):
         pyautogui.press('2')
 
-    def select_axe():
+    def select_axe(self):
         pyautogui.press('3')
+    
+    def rotate_right(self):
+        pyautogui.moveRel(200, 0, duration = 1)
+
+    def rotate_left(self):
+        pyautogui.moveRel(-200, 0, duration = 1)
 
     def check_punch_start(self, flex_value):
         if (flex_value >= self.flex_threshold and not self.pressing):
@@ -89,6 +98,8 @@ class MinecraftController:
             self.select_sword()
         elif (item == 3):
             self.select_axe()
+        else:
+            self.select_pickaxe()
 
     def rotate_camera(self, y, x):
         if (y <= self.uptilt_threshold):

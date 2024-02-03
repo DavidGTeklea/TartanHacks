@@ -3,7 +3,7 @@ import time
 import struct
 from data import GameActionData
 from minecraft_controller import MinecraftController
-# from Classifier.classifier import take_screenshot, weapon_classifier
+from Classifier.classifier_fast import take_screenshot, weapon_classifier
 from roboflow import Roboflow
 
 # data connection to arduino
@@ -19,15 +19,9 @@ Accelerometer_Value_Default_Chest = [-1100.0, 18000.0, -1000.0]
 Gyroscope_Value_Default_Chest= [100.0, -9000.0, 11500.0]
 
 mc_controller = MinecraftController()
-# rf = Roboflow(api_key="c5Ak0Ld4PWZ1PNR0nt23")
-# mob_project = rf.workspace().project("minecraft-mob-detection")
-# mob_model = mob_project.version(10).model
 
-# tree_project = rf.workspace().project("minecraft-tree-detection")
-# tree_model = tree_project.version(1).model
 time.sleep(3)
 print("starting controller...")
-
 
 try:
     while True:
@@ -54,11 +48,9 @@ try:
             game_action_data = GameActionData(flex_value = EMG_Value_Bicep, jump_value = Gyroscope_Value_Chest[0], y_move= Gyroscope_Value_Chest[1], x_move= Gyroscope_Value_Chest[2], y_tilt=Gyroscope_Value_Head[1], x_tilt=Gyroscope_Value_Head[2])
             mc_controller.game_actions(game_action_data)
 
-            # item = weapon_classifier(take_screenshot())
-            # mc_controller.select_item(item)
-
+            item = weapon_classifier(take_screenshot())
+            mc_controller.select_item(item)
 
 except KeyboardInterrupt:
     ser.close()
     print("Serial connection closed.")
-
