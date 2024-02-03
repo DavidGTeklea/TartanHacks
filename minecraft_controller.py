@@ -3,7 +3,7 @@ import sys
 import time
 from pynput.keyboard import Key, Controller
 import pyautogui # better than pynput for more gradual movements
-from data import GameActionData, RotationData
+from data import GameActionData
 
 class MinecraftController:
     flex_threshold = 150
