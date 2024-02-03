@@ -18,47 +18,36 @@ tree_model = tree_project.version(1).model
 #counter
 count = 0
 
-def take_screenshot(count):
-    # infer on a local image
-    image_name = "Classifier/output/image" + str(count)
-
+def take_screenshot():
     # take screenshot using pyautogui 
     image = np.array(pyautogui.screenshot())
     
     # image formatting
     image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
 
-    # writing it to the disk using opencv
-    cv2.imwrite(image_name + ".jpg", image[440:640, 810:1110, :])
+    # return
+    return image[340:7400, 710:1210, :]
 
-def weapon_classifier(count):
-    # infer on a local image
-    image_name = "Classifier/output/image" + str(count)
-
+def weapon_classifier(image):
     # visualize your prediction
-    mobs = mob_model.predict(image_name + ".jpg", confidence=40, overlap=20).json().get('predictions')
-    trees = tree_model.predict(image_name + ".jpg", confidence=40, overlap=20).json().get('predictions')
+    mobs = mob_model.predict(image, confidence=40, overlap=20).json().get('predictions')
+
+    trees = tree_model.predict(image, confidence=40, overlap=20).json().get('predictions')
 
     for dict in trees:
         if(int(dict.get('x')) > 50 and int(dict.get('x') < 300) and int(dict.get('width')) > 50 and int(dict.get('height')) > 100):
-            print(str(count) + ": axe")
-            return 2
+            return 3
 
     for dict in mobs:
         # if the mob is in the middle of the screen AND has a reasonable size
         if(int(dict.get('x')) > 100 and int(dict.get('x') < 300) and int(dict.get('width')) > 50 and int(dict.get('height')) > 50):
-            print(str(count) + ": sword")
-            return 1
-        
-    print(str(count) + ': pickaxe')
-    return 0
+            return 2
+
+    return 1
 
 while(1):
-    take_screenshot(count)
-    weapon_classifier(count)
+    weapon_classifier(take_screenshot())
     count += 1
 
     if(count >= 20):
         break
-
-    time.sleep(0.5)
