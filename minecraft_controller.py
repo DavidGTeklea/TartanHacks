@@ -12,7 +12,6 @@ class MinecraftController:
     pressing = False
     keyboard = Controller()
     
-    time.sleep(5)
 
     def start_hit(self):
         print("started hitting")
