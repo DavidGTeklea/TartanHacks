@@ -29,6 +29,12 @@ class MinecraftController:
 
     def select_axe():
         pyautogui.press('3')
+    
+    def rotate_right():
+        pyautogui.moveRel(200, 0, duration = 1)
+
+    def rotate_left():
+        pyautogui.moveRel(-200, 0, duration = 1)
 
     def game_actions(self, data: GameActionData):
         if (data.flex_value >= self.flex_threshold and not self.pressing):
