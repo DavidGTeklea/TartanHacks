@@ -2,6 +2,7 @@ import pynput, time
 from pynput import mouse, keyboard
 from pynput.mouse import Button, Controller
 
+
 bicep_threshold = 90
 lean_threshold = 90
 
@@ -52,7 +53,7 @@ def look_down():
 
 # have your character look up
 def look_up():
-    mouse.move(0, 700)
+    mouse.move(0, -700)
 
 # these commands test differentiation between a hit action, and a multi-hit action. use for testing.
 pause(5)
