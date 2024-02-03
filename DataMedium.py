@@ -3,6 +3,8 @@ import time
 import struct
 from data import GameActionData, RotationData
 from minecraft_controller import MinecraftController
+from Classifier.classifier import take_screenshot, weapon_classifier
+from roboflow import Roboflow
 
 # data connection to arduino
 ser = serial.Serial('COM5', 9600, timeout=1)
@@ -17,6 +19,12 @@ Accelerometer_Value_Default_Chest = [-1100.0, 18000.0, -1000.0]
 Gyroscope_Value_Default_Chest= [100.0, -9000.0, 11500.0]
 
 mc_controller = MinecraftController()
+rf = Roboflow(api_key="c5Ak0Ld4PWZ1PNR0nt23")
+mob_project = rf.workspace().project("minecraft-mob-detection")
+mob_model = mob_project.version(10).model
+
+tree_project = rf.workspace().project("minecraft-tree-detection")
+tree_model = tree_project.version(1).model
 
 try:
     while True:
@@ -34,6 +42,7 @@ try:
 
             # print("----------------")
             print("EMG Value: " + str(EMG_Value_Bicep))
+            # print("EMG Value: " + str(EMG_Value_Bicep))
             # print("Accel Head Value: " + str(Accelerometer_Value_Head[0]) + ", " + str(Accelerometer_Value_Head[1]) + ", " + str(Accelerometer_Value_Head[2]))
             # print("Gyro Head Value: " + str(Gyroscope_Value_Head[0]) + ", " + str(Gyroscope_Value_Head[1]) + ", " + str(Gyroscope_Value_Head[2]))
             # print("Accel Chest Value: " + str(Accelerometer_Value_Chest[0]) + ", " + str(Accelerometer_Value_Chest[1]) + ", " + str(Accelerometer_Value_Chest[2]))
@@ -42,6 +51,8 @@ try:
             game_action_data = GameActionData(flex_value = EMG_Value_Bicep, jump_value=0)
             mc_controller.game_actions(game_action_data)
 
+            item = weapon_classifier(take_screenshot())
+            
 
 except KeyboardInterrupt:
     ser.close()
