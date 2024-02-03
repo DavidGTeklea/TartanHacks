@@ -16,19 +16,19 @@ pyautogui.FAILSAFE = False # stops this script from complaining when at edge of 
 
 # have your character look up
 def look_up():
-    pyautogui.moveRel(0, -300, duration = 3) # moves it to a specific point, not relative
+    pyautogui.moveRel(0, -300, duration = 1) # moves it to a specific point, not relative
 
 # have your character look down 
 def look_down():
-    pyautogui.moveRel(0, 300, duration = 3)
+    pyautogui.moveRel(0, 300, duration = 1)
 
 # rotate your character right
 def rotate_right():
-    pyautogui.moveRel(200, 0, duration = 3)
+    pyautogui.moveRel(200, 0, duration = 1)
 
 # rotate your character left
 def rotate_left():
-    pyautogui.moveRel(-200, 0, duration = 3)
+    pyautogui.moveRel(-200, 0, duration = 1)
 
 # have your character to hit in minecraft
 def hit():
