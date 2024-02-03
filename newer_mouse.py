@@ -34,6 +34,12 @@ def rotate_left():
 # testing calls
 pause(5)
 rotate_left()
+pause(5)
+rotate_right()
+pause(5)
+look_up()
+pause(5)
+look_down()
 
 
 

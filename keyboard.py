@@ -11,7 +11,8 @@ def jump():
     keyboard.press(Key.space)
     
     # pause for 5 seconds
-    pause(5) ''' keyboard.release doesn't work for stopping actions well without setting 
+    pause(5) 
+    ''' keyboard.release doesn't work for stopping actions well without setting 
             some kind of sleep delay Toby. Keshav is fine with sleep delay since it only 
             affects one thread instead of the whole program '''
     
