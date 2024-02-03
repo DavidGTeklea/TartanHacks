@@ -52,7 +52,8 @@ try:
             mc_controller.game_actions(game_action_data)
 
             item = weapon_classifier(take_screenshot())
-            
+            mc_controller.select_item(item)
+
 
 except KeyboardInterrupt:
     ser.close()

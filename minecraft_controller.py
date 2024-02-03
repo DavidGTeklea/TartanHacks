@@ -16,16 +16,13 @@ class MinecraftController:
     def start_hit(self):
         print("started hitting")
         pyautogui.mouseDown()
-        # sys.exit()
 
     def end_hit(self):
         print("stopped hitting")
         pyautogui.mouseUp()
-        # sys.exit()
 
     def jump(self):
         self.keyboard.press(Key.space)
-        sys.exit()
     
     def select_sword():
         pyautogui.press('2')
@@ -42,6 +39,12 @@ class MinecraftController:
             self.pressing = False
         if (data.jump_value >= self.jump_threshold):
             Thread(target=self.jump).start()
+
+    def select_item(self, item: int):
+        if (item == 2):
+            self.select_sword()
+        elif (item == 3):
+            self.select_axe()
 
     def rotate_camera(self, data: RotationData):
         y_value = data.x_value / 10
