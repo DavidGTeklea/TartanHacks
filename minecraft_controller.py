@@ -39,8 +39,8 @@ class MinecraftController:
             Thread(target=self.jump).start()
 
     def rotate_camera(self, data: RotationData):
-        y_angle = data.y_angle / 90
-        x_angle = data.x_angle / 90
-        pyautogui.moveRel(200 * x_angle, 300 * y_angle, duration=1)
+        y_value = data.x_value / 10
+        x_value = data.y_value / 10
+        pyautogui.moveRel(200 * x_value, 300 * y_value, duration=1)
 
 

@@ -7,9 +7,9 @@ class GameActionData:
         self.jump_value = jump_value
 
 class RotationData:
-    y_angle: int
-    x_angle: int
+    x_value: int
+    y_value: int
 
-    def __init__(self, y_angle, x_angle):
-        self.y_angle = y_angle
-        self.x_angle = x_angle
+    def __init__(self, y_value, x_value):
+        self.x_value = y_value
+        self.y_value = x_value
