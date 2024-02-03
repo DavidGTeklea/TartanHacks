@@ -8,17 +8,20 @@ def just_for_testing():
 
 def jump():
     keyboard.press(Key.space)
-    keyboard.release(Key.space)
 
 def walk():
     keyboard.press('w')
+    for i in range(10):
+        if i > 8:
+            stopWalk()
+
+
+def stopWalk():
+    keyboard.release('w')
 
 just_for_testing()
-jump()
-jump()
-jump()
 
-for i in range(10):
-    walk()
+walk()    
 
+jump()
 
