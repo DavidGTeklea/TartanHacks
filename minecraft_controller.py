@@ -6,7 +6,7 @@ import pyautogui # better than pynput for more gradual movements
 from data import GameActionData, RotationData
 
 class MinecraftController:
-    flex_threshold = 90
+    flex_threshold = 150
     jump_threshold = 90
 
     pressing = False
@@ -16,17 +16,22 @@ class MinecraftController:
     def start_hit(self):
         print("started hitting")
         pyautogui.mouseDown()
-        sys.exit()
+        # sys.exit()
 
     def end_hit(self):
         print("stopped hitting")
         pyautogui.mouseUp()
-        sys.exit()
+        # sys.exit()
 
     def jump(self):
-        print("started hitting")
         self.keyboard.press(Key.space)
         sys.exit()
+    
+    def select_sword():
+        pyautogui.press('2')
+
+    def select_axe():
+        pyautogui.press('3')
 
     def game_actions(self, data: GameActionData):
         if (data.flex_value >= self.flex_threshold and not self.pressing):

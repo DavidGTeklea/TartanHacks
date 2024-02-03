@@ -1,4 +1,4 @@
-import pynput, time
+import pynput, time, pyautogui
 from pynput.keyboard import Key, Controller
 
 keyboard = Controller()
@@ -27,8 +27,19 @@ def walk():
     
     keyboard.release('w')
 
+def select_sword():
+    pyautogui.press('2')
+
+def select_axe():
+    pyautogui.press('3')
+
+
+
 # these commands differentiate between jumping and walking. use for testing.
-pause(5)
-jump()
-walk()    
+# pause(2)
+# jump()
+# walk()    
+
+ 
+
 
