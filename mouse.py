@@ -14,45 +14,53 @@ def pause(x):
 # have a sleep command called to give time for us to switch from program to 
 # minecraft game
 # if some input value range, do said action
-
 def game_actions(data):
     if (data.bicep_flex > bicep_threshold):
         hit()
     if (data.lean_forward > lean_threshold):
         walk()
-    # ...
 
-
-# pickaxe, hit
-# pretend you equipment case has a pickaxe in the first slot, sword in second slot, 
+# have your character to hit or dig in minecraft
 def hit():
     mouse.press(Button.left)
     pause(0.5)
     mouse.release(Button.left)
 
-def continual_hit():
+# have your character do a longer hit or dig in minecraft
+def continual_hit(x):
     mouse.press(Button.left)
-    pause(5)
+    pause(x)
     mouse.release(Button.left)
 
 # rotate your character right
 def rotate_right():
     mouse.move(700, 0)
 
-    # Mouse.move and mouse.position doesn't work in minecraft since mouse is glued to the center. Have to change it up for rotations.
-
-
 # rotate your character left
 def rotate_left():
     mouse.move(-700, 0)
 
-# these commands differentiate between a hit action, and a multi-hit action
+'''
+Note to self and Toby: Keshav talked about an input of an angle for look_down and look_up functions, 
+so if person looks slightly up (45 degrees, instead of a full 90 degrees), 
+and 700 causes the y axis to look fully up, multiply 700 * 0.5. If we have angle input, we can add that as a parameter
+to do the aforementioned multiplications operations
+'''
+# have your character look down 
+def look_down():
+    mouse.move(0, 700)
+
+# have your character look up
+def look_up():
+    mouse.move(0, 700)
+
+# these commands test differentiation between a hit action, and a multi-hit action. use for testing.
 pause(5)
 hit()
 pause(5)
-continual_hit()
+continual_hit(5) # number parameter represents how many seconds you want to hit or dig for
 
-# these commands differentiate between rotating left, and rotating right
+# these commands test differentiation between rotating left, and rotating right. use for testing.
 # IMPORTANT: YOU NEED TO TURN OFF RAW_INPUT IN YOUR MINECRAFT SETTINGS BEFORE TRYING THESE COMMANDS. TO DO THAT:
 '''
 Press Esc -> Options -> Controls -> Mouse Settings -> Raw Input: OFF
@@ -62,8 +70,4 @@ rotate_right()
 pause(5)
 rotate_left()
 
-
-# to rotate Character in MineCraft, use mouse.move(int x, int y) or mouse.position(int x, int y). Move is more dynamic tbh 
-# to switch items in your equipment handbar, use mouse.scroll(int x) where x is some number
-# to look top left, we can do sequence for now, maybe multithread to do smooth movement with a 
-# diagonal mouse movement
+# to switch items in your equipment handbar, use mouse.scroll(int x) where x is some number based off Tim's smart action
