@@ -1,6 +1,7 @@
 import pynput, time
 from pynput import mouse, keyboard
 from pynput.mouse import Button, Controller
+# import data.py as data
 
 
 bicep_threshold = 90
@@ -24,13 +25,18 @@ def game_actions(data):
 # have your character to hit or dig in minecraft
 def hit():
     mouse.press(Button.left)
-    pause(0.5)
+    # pause(0.5), without this pause, only clicks once
     mouse.release(Button.left)
+
+# have your character place a block in minecraft
+def place_block():
+    mouse.press(Button.right)
+    mouse.release(Button.right)
 
 # have your character do a longer hit or dig in minecraft
 def continual_hit(x):
     mouse.press(Button.left)
-    pause(x)
+    # pause(x)
     mouse.release(Button.left)
 
 # rotate your character right
@@ -57,6 +63,7 @@ def look_up():
 
 # these commands test differentiation between a hit action, and a multi-hit action. use for testing.
 pause(5)
+place_block()
 hit()
 pause(5)
 continual_hit(5) # number parameter represents how many seconds you want to hit or dig for

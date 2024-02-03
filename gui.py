@@ -3,7 +3,9 @@ import customtkinter as ctk
 # window
 window = ctk.CTk()
 window.title('minecraft displayer')
-window.geometry('150x100')
+
+frame = ctk.CTkFrame(window)
+frame.pack()
 
 # widgets
 label = ctk.CTkLabel(
