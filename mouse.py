@@ -40,4 +40,5 @@ continual_hit()
 
 # to rotate Character in MineCraft, use mouse.move(int x, int y) or mouse.position(int x, int y). Move is more dynamic tbh 
 # to switch items in your equipment handbar, use mouse.scroll(int x) where x is some number
-
+# to look top left, we can do sequence for now, maybe multithread to do smooth movement with a 
+# diagonal mouse movement
