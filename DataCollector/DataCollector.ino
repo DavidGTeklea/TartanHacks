@@ -42,7 +42,8 @@ void loop() {
   // send packaged data serially to python
   float DataPackage[]= {EMG_Value_Bicep, Accelerometer_Value_X_Head, Accelerometer_Value_Y_Head, Accelerometer_Value_Z_Head, Gyroscope_Value_X_Head, Gyroscope_Value_Y_Head, Gyroscope_Value_Z_Head, Accelerometer_Value_X_Chest, Accelerometer_Value_Y_Chest, Accelerometer_Value_Z_Chest, Gyroscope_Value_X_Chest, Gyroscope_Value_Y_Chest, Gyroscope_Value_Z_Chest};
   Serial.write((uint8_t*)DataPackage, sizeof(DataPackage));
-  delay(1000);
+
+  delay(500);
 }
 
 void GetMPUHead(const int MPU){ 
