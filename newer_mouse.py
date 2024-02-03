@@ -41,6 +41,7 @@ def place_block():
 
 def dig():
     pyautogui.mouseDown()
+    
 
 # testing calls
 pause(5)
