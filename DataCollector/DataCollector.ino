@@ -1,58 +1,75 @@
 #include <MPU6050.h>
 #include <Wire.h>
 
-MPU6050 mpu_head, mpu_chest;
 
 // Sensors
 int EMG_Pin = A0;
 
-struct Vector3f {
-  float x;
-  float y;
-  float z;
-};
+const int mpu_chest = 0x69, mpu_head = 0x68;
+
+int16_t Accelerometer_Value_X_Head, Accelerometer_Value_Y_Head, Accelerometer_Value_Z_Head, Gyroscope_Value_X_Head, Gyroscope_Value_Y_Head, Gyroscope_Value_Z_Head, Accelerometer_Value_X_Chest, Accelerometer_Value_Y_Chest, Accelerometer_Value_Z_Chest, Gyroscope_Value_X_Chest, Gyroscope_Value_Y_Chest, Gyroscope_Value_Z_Chest;
+int16_t Temp1, Temp2;
 
 // Setup
 void setup() {
-  Serial.begin(9600);
   Wire.begin();
-  mpu_head.initialize();
-  mpu_chest.initialize();
+  Wire.beginTransmission(mpu_head);
+  Wire.write(0x6B);
+  Wire.write(0);
+  Wire.endTransmission(true);
+  
+  Wire.begin();
+  Wire.beginTransmission(mpu_chest);
+  Wire.write(0x6B);
+  Wire.write(0);
+  Wire.endTransmission(true);
+
+  Serial.begin(9600);
+
 }
 
 // Main Loop
 void loop() {
   // get bicep EMG sensor
-  int EMG_Value_Bicep = analogRead(EMG_Pin);
+  int16_t EMG_Value_Bicep = analogRead(EMG_Pin);
 
   // get head Accelerometer/Gyroscope sensor
-  int16_t Accelerometer_Value_Raw_Head[3], Gyroscope_Value_Raw_Head[3];
-  mpu_head.getMotion6(&Accelerometer_Value_Raw_Head[0], &Accelerometer_Value_Raw_Head[1], &Accelerometer_Value_Raw_Head[2], &Gyroscope_Value_Raw_Head[0], &Gyroscope_Value_Raw_Head[1], &Gyroscope_Value_Raw_Head[2]);
-  float Accelerometer_Value_X_Head = Accelerometer_Value_Raw_Head[0] / 16384.0;
-  float Accelerometer_Value_Y_Head = Accelerometer_Value_Raw_Head[1] / 16384.0;
-  float Accelerometer_Value_Z_Head = Accelerometer_Value_Raw_Head[2] / 16384.0;
-  float Gyroscope_Value_X_Head = Gyroscope_Value_Raw_Head[0] / 131.0;
-  float Gyroscope_Value_Y_Head = Gyroscope_Value_Raw_Head[1] / 131.0;
-  float Gyroscope_Value_Z_Head = Gyroscope_Value_Raw_Head[2] / 131.0;
-
+  GetMPUHead(mpu_head);
+  
   // get chest Accelerometer/Gryoscope sensor
-  int16_t Accelerometer_Value_Raw_Chest[3], Gyroscope_Value_Raw_Chest[3];
-  mpu_head.getMotion6(&Accelerometer_Value_Raw_Chest[0], &Accelerometer_Value_Raw_Chest[1], &Accelerometer_Value_Raw_Chest[2], &Gyroscope_Value_Raw_Chest[0], &Gyroscope_Value_Raw_Chest[1], &Gyroscope_Value_Raw_Chest[2]);
-  float Accelerometer_Value_X_Chest = Accelerometer_Value_Raw_Chest[0] / 16384.0;
-  float Accelerometer_Value_Y_Chest = Accelerometer_Value_Raw_Chest[1] / 16384.0;
-  float Accelerometer_Value_Z_Chest = Accelerometer_Value_Raw_Chest[2] / 16384.0;
-  float Gyroscope_Value_X_Chest = Gyroscope_Value_Raw_Chest[0] / 131.0;
-  float Gyroscope_Value_Y_Chest = Gyroscope_Value_Raw_Chest[1] / 131.0;
-  float Gyroscope_Value_Z_Chest = Gyroscope_Value_Raw_Chest[2] / 131.0;
+  GetMPUChest(mpu_chest);
   
   // send packaged data serially to python
-  Serial.print(PackageData(EMG_Value_Bicep, Accelerometer_Value_X_Head, Accelerometer_Value_Y_Head, Accelerometer_Value_Z_Head, Gyroscope_Value_X_Head, Gyroscope_Value_Y_Head, Gyroscope_Value_Z_Head, Accelerometer_Value_X_Chest, Accelerometer_Value_Y_Chest, Accelerometer_Value_Z_Chest, Gyroscope_Value_X_Chest, Gyroscope_Value_Y_Chest, Gyroscope_Value_Z_Chest));
-  Serial.println();
+  float DataPackage[]= {EMG_Value_Bicep, Accelerometer_Value_X_Head, Accelerometer_Value_Y_Head, Accelerometer_Value_Z_Head, Gyroscope_Value_X_Head, Gyroscope_Value_Y_Head, Gyroscope_Value_Z_Head, Accelerometer_Value_X_Chest, Accelerometer_Value_Y_Chest, Accelerometer_Value_Z_Chest, Gyroscope_Value_X_Chest, Gyroscope_Value_Y_Chest, Gyroscope_Value_Z_Chest};
+  Serial.write((uint8_t*)DataPackage, sizeof(DataPackage));
   delay(1000);
 }
 
-// Packages data into a string
-String PackageData(int EMG_Value_Bicep, float Accelerometer_Value_X_Head, float Accelerometer_Value_Y_Head, float Accelerometer_Value_Z_Head, float Gyroscope_Value_X_Head, float Gyroscope_Value_Y_Head, float Gyroscope_Value_Z_Head, float Accelerometer_Value_X_Chest, float Accelerometer_Value_Y_Chest, float Accelerometer_Value_Z_Chest, float Gyroscope_Value_X_Chest, float Gyroscope_Value_Y_Chest, float Gyroscope_Value_Z_Chest){
-  return String(EMG_Value_Bicep) + "," + String(Accelerometer_Value_X_Head) + "," + String(Accelerometer_Value_Y_Head) + "," + String(Accelerometer_Value_Z_Head) + "," + String(Gyroscope_Value_X_Head) + "," + String(Gyroscope_Value_Y_Head) + "," + String(Gyroscope_Value_Z_Head) + "," + String(Accelerometer_Value_X_Chest) + "," + String(Accelerometer_Value_Y_Chest) + "," + String(Accelerometer_Value_Z_Chest) + "," + String(Gyroscope_Value_X_Chest) + "," + String(Gyroscope_Value_Y_Chest) + "," + String(Gyroscope_Value_Z_Chest);
+void GetMPUHead(const int MPU){ 
+  Wire.beginTransmission(MPU); 
+  Wire.write(0x3B); 
+  Wire.endTransmission(false);
+  Wire.requestFrom(MPU, 14, true);
+  Accelerometer_Value_X_Head = Wire.read()<<8| Wire.read();
+  Accelerometer_Value_Y_Head = Wire.read()<<8|  Wire.read();
+  Accelerometer_Value_Z_Head = Wire.read()<<8| Wire.read();
+  Temp1 = Wire.read()<<8| Wire.read();
+  Gyroscope_Value_X_Head = Wire.read()<<8| Wire.read();
+  Gyroscope_Value_Y_Head = Wire.read()<<8| Wire.read();
+  Gyroscope_Value_Z_Head = Wire.read()<<8| Wire.read();
+}
+     
+void GetMPUChest(const int MPU){ 
+  Wire.beginTransmission(MPU); 
+  Wire.write(0x3B); 
+  Wire.endTransmission(false);
+  Wire.requestFrom(MPU, 14, true);
+  Accelerometer_Value_X_Chest = Wire.read()<<8| Wire.read();
+  Accelerometer_Value_Y_Chest = Wire.read()<<8|  Wire.read();
+  Accelerometer_Value_Z_Chest = Wire.read()<<8| Wire.read();
+  Temp2 = Wire.read()<<8| Wire.read();
+  Gyroscope_Value_X_Chest = Wire.read()<<8| Wire.read();
+  Gyroscope_Value_Y_Chest = Wire.read()<<8| Wire.read();
+  Gyroscope_Value_Z_Chest = Wire.read()<<8| Wire.read();
 }
 
