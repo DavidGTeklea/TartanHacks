@@ -30,9 +30,24 @@ def rotate_right():
 def rotate_left():
     pyautogui.moveRel(-200, 0, duration = 1)
 
+# have your character to hit in minecraft
+def hit():
+    pyautogui.click()
+    # pause(0.5), without this pause, only clicks once
+
+# have your character place a block in minecraft
+def place_block():
+    pyautogui.click(button = 'right')
+
 
 # testing calls
 pause(5)
+dig()
+pause(2)
+hit()
+pause(2)
+place_block()
+pause(2) 
 rotate_left()
 pause(5)
 rotate_right()
